@@ -5,12 +5,12 @@
 
   <servers>
     <server>
-      <id>${SNAP-REPO}</id>
+      <id>${SNAP_REPO}</id>
       <username>${NEXUS_USER}</username>
       <password>${NEXUS_PASS}</password>
     </server>
     <server>
-      <id>${RELEASE-REPO}</id>
+      <id>${RELEASE_REPO}</id>
       <username>${NEXUS_USER}</username>
       <password>${NEXUS_PASS}</password>
     </server>
