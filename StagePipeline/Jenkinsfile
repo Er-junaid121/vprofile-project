@@ -26,7 +26,6 @@ pipeline {
         appRegistry = '533267311971.dkr.ecr.ap-south-1.amazonaws.com/vprofileappimg'
         vprofileRegistry = "https://533267311971.dkr.ecr.ap-south-1.amazonaws.com"
     }
-     
 
     stages {
         stage('Build') {
@@ -40,7 +39,6 @@ pipeline {
                 }
             }
         }
-        
 
         stage('Test') {
             steps {
@@ -99,26 +97,26 @@ pipeline {
                 )
             }
         }
-    }   
+
         stage('Build App Image') {
             steps {
                 script {
-                    dockerImage = docker.build( appRegistry+ ":$BUILD_NUMBER", "./Docker-files/app/multistage" )
+                    dockerImage = docker.build(appRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage")
                 }
             }
         }
 
         stage('Upload App Image') {
-            steps{
+            steps {
                 script {
-                    docker.withRegistry( vprofileRegistry, registryCrendential ) {
+                    docker.withRegistry(vprofileRegistry, registryCrendential) {
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push('latest')
                     }
                 }
             }
         }
-
+    }
 
     post {
         always {
@@ -129,5 +127,3 @@ pipeline {
         }
     }
 }
-
-
