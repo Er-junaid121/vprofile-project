@@ -6,8 +6,8 @@ def COLOR_MAP = [
 pipeline {
     agent any
     environment {
-        cluster = vproprod
-        service = vproappprod-svc
+        cluster = "vproprod"
+        service = "vproappprod-svc"
     }
 
     stages {
