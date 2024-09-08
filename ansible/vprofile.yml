@@ -1,4 +1,3 @@
----
 - hosts: tomcatservers
   become: yes
   gather_facts: False
@@ -7,16 +6,16 @@
   - name: Install EPEL-release
     yum: name=epel-release state=present
 
-
   - name: Install java_1.8
+
     yum: name=java-1.8.0-openjdk.x86_64 state=present
 
   - name: Install tomcat
     yum: name=tomcat state=present
 
-
   - name: Download latest VProfile.war file
-    get_url: url=http://{{nexusip}}:8081/nexus/content/repositories/VProfile-repo/{{groupid}}/{{time}}/{{build}}/{{vprofile_version}} dest=/tmp/ mode=755
+
+    get_url: url=http://{{nexusip}}:8081/nexus/content/repositories/vprofile-release/{{groupid}}/{{time}}/{{build}}/{{vprofile_version}} dest=/tmp/ mode=755
 
   - name: Stop tomcat service
     service: name=tomcat state=stopped
