@@ -22,7 +22,7 @@ pipeline {
         NEXUS_LOGIN = 'nexuslogin'
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
-        NEXUSPASS = credenttials('nexuspass')
+        NEXUSPASS = credentials('nexuspass')
        
     }
 
