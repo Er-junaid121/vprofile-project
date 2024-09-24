@@ -101,7 +101,7 @@ pipeline {
         }
     }
 
-        stage('Deploy to Stage Bean'){
+        stage('Deploy to Stage Bean') {
             steps {
               withAWS(credentials: 'awsbeancreds', region: 'ap-south-1') {
                 sh 'aws s3 cp ./target/vprofile-v2.war s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
