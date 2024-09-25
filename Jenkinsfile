@@ -1,6 +1,3 @@
-def buildNumber = jenkins.instance.getItem('cicd-jenkins-bean-stage').lastSuccessfulBuild.number
-
-
 def COLOR_MAP = [
     'SUCCESS': 'good',
     'FAILURE': 'danger'
@@ -25,19 +22,26 @@ pipeline {
         NEXUS_LOGIN = 'nexuslogin'
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
-        ARTIFACT_NAME = "vprofile-v${buildNumber}.war"
         AWS_S3_BUCKET = 'vprocicdbean'
         AWS_EB_APP_NAME = 'vproapp'
         AWS_EB_ENVIRONMENT = 'Vproapp-prod-env'
-        AWS_EB_APP_VERSION = "${buildNumber}"
     }
 
     stages {
-        // Move the Deploy to Stage Bean stage inside the stages block
+        stage('Set Build Number') {
+            steps {
+                script {
+                    def job = Jenkins.instance.getItem('cicd-jenkins-bean-stage')
+                    def buildNumber = job.lastSuccessfulBuild.number
+                    env.BUILD_NUMBER_VAR = "${buildNumber}"  // Store build number in env variable
+                }
+            }
+        }
+
         stage('Deploy to Stage Bean') {
             steps {
                 withAWS(credentials: 'awsbeancreds', region: 'ap-south-1') {
-                    sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label $AWS_EB_APP_VERSION'
+                    sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label ${BUILD_NUMBER_VAR}'
                 }
             }
         }
@@ -48,7 +52,7 @@ pipeline {
             echo 'Slack Notification.'
             slackSend channel: '#k8scicd',
             color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}:* job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            message: "*${currentBuild.currentResult}:* job ${env.JOB_NAME} build ${env.BUILD_NUMBER_VAR} \n More info at: ${env.BUILD_URL}"
         }
     }
 }
