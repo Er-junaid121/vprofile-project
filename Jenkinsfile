@@ -19,7 +19,7 @@ pipeline {
         SONARSCANNER = 'sonarscanner'
         ARTIFACT_NAME = "vprofile-v${BUILD_ID}.war"
         AWS_S3_BUCKET = 'vprocicdbean'
-        AWS_EB_APP_NAME = 'vproapp'
+        AWS_EB_APP_NAME = 'vproaapp'
         AWS_EB_ENVIRONMENT = 'Vproapp-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
     }
