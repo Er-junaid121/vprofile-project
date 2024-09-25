@@ -1,6 +1,3 @@
-def buildNumber = jenkins.instance.getItem('cicd-jenkins-bean-stage').lastSuccessfulBuild.number
-
-
 def COLOR_MAP = [
     'SUCCESS': 'good',
     'FAILURE': 'danger'
@@ -25,15 +22,13 @@ pipeline {
         NEXUS_LOGIN = 'nexuslogin'
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
-        ARTIFACT_NAME = "vprofile-v${buildNumber}.war"
         AWS_S3_BUCKET = 'vprocicdbean'
         AWS_EB_APP_NAME = 'vproapp'
         AWS_EB_ENVIRONMENT = 'Vproapp-prod-env'
-        AWS_EB_APP_VERSION = "${buildNumber}"
+        AWS_EB_APP_VERSION = "${currentBuild.number}" // Use current build number
     }
 
     stages {
-        // Move the Deploy to Stage Bean stage inside the stages block
         stage('Deploy to Stage Bean') {
             steps {
                 withAWS(credentials: 'awsbeancreds', region: 'ap-south-1') {
